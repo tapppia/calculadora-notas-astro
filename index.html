@@ -1,346 +1,247 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Calculadora de Notas con Guardado</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
-<style>
+  <meta charset="UTF-8" />
+  <title>Malla Astrofísica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+  <style>
     body {
-        font-family: 'Oswald', sans-serif;
-        background-color: white;
-        color: black;
-        text-align: center;
+      font-family: 'Oswald', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 40px;
     }
-    .container {
-        max-width: 650px;
-        margin: auto;
-        padding: 20px;
+
+    .malla {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1500px;
+      margin: 0 auto;
     }
-    h1 {
-        background-color: #FFD60A;
-        color: white;
-        padding: 15px;
-        border-radius: 10px;
-        font-size: 28px;
+
+    .semester {
+      background-color: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-    label {
-        display: block;
-        margin-top: 15px;
-        font-size: 18px;
-        text-align: left;
+
+    .semester h2 {
+      background-color: #000000;
+      color: white;
+      padding: 12px;
+      margin: 0;
+      text-align: center;
+      font-size: 20px;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-    input, select {
-        padding: 8px;
-        font-size: 16px;
-        width: 100%;
-        margin-top: 5px;
-        border-radius: 8px;
-        border: 2px solid #FFD60A;
-        text-align: center;
-        font-family: 'Oswald', sans-serif;
-        background-color: white;
-        color: black;
+
+    .semester.complete h2 {
+      background-color: #FFD54F;
+      color: black;
     }
-    .yellow-select {
-        background-color: #FFD60A;
-        color: white;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        background-size: 16px;
+
+    .course {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+      height: 70px;
     }
-    .btn {
-        margin-top: 15px;
-        background-color: #FFD60A;
-        color: white;
-        border: none;
-        padding: 10px;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 8px;
-        font-family: 'Oswald', sans-serif;
-        width: 100%;
+
+    .course:hover {
+      transform: translateY(-2px);
     }
-    .btn:hover {
-        opacity: 0.85;
+
+    .course.approved {
+      background-color: #FFD54F;
+      color: black;
+      font-weight: bold;
     }
-    .results {
-        margin-top: 20px;
-        padding: 15px;
-        border-radius: 10px;
-        background-color: #FFD60A;
-        color: white;
-        font-size: 18px;
+
+    .blocked {
+      opacity: 0.6;
     }
-    .note-input {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-        gap: 10px;
+
+    .emoji-btn {
+      font-size: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      width: 28px;
+      text-align: center;
+      line-height: 1;
+      padding: 0;
     }
-    .note-input input {
-        width: 48%;
+
+    .emoji-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
-    table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
+
+    .emoji-btn:hover:not(:disabled) {
+      transform: scale(1.2);
     }
-    th, td {
-        border: 1px solid #FFD60A;
-        padding: 8px;
-        font-size: 14px;
-    }
-    th {
-        background-color: #FFD60A;
-        color: white;
-    }
-    td button {
-        background-color: #FFD60A;
-        color: white;
-        border: none;
-        padding: 5px 8px;
-        cursor: pointer;
-        border-radius: 5px;
-        font-family: 'Oswald', sans-serif;
-    }
-</style>
+  </style>
 </head>
 <body>
-<div class="container">
-    <h1>Calculadora de Notas</h1>
+  <div class="malla" id="mallaContainer"></div>
 
-    <label for="curso">Selecciona el curso:</label>
-    <select id="curso" class="yellow-select">
-        <option value="">-- Selecciona un curso --</option>
-        <option>Introducción a la Física I</option>
-        <option>Bases Matemáticas para la Física I</option>
-        <option>Física Computacional I</option>
-        <option>Datos Físicos I</option>
-        <option>Gestión Personal</option>
-        <option>Introducción a la Astrofisica</option>
-        <option>Inglés I</option>
-        <option>Introducción a la Física II</option>
-        <option>Bases Matemáticas para la Física II</option>
-        <option>Física Computacional II</option>
-        <option>Datos Físicos II</option>
-        <option>Introducción a la Ciencia de Datos</option>
-        <option>Comunicación científica</option>
-        <option>Inglés II</option>
-        <option>Mecánica Newtoniana</option>
-        <option>Cálculo Vectorial</option>
-        <option>Física Computacional III</option>
-        <option>Estructura de la Materia</option>
-        <option>Termodinamica</option>
-        <option>Desarrollo de Software</option>
-        <option>Inglés III</option>
-        <option>Electromagnetismo</option>
-        <option>Ondas</option>
-        <option>Métodos Matemáticos para la Física I</option>
-        <option>Física Computacional IV</option>
-        <option>Introducción a la Estadística Moderna</option>
-        <option>Proyecto de Especialidad</option>
-        <option>Inglés IV</option>
-        <option>Mecánica Clásica</option>
-        <option>Fenómenos cuánticos</option>
-        <option>Métodos Matemáticos para la Física II</option>
-        <option>Astrofísica Estelar</option>
-        <option>Astrofísica Observacional</option>
-        <option>Electivo I</option>
-        <option>Mecanica de Fluidos</option>
-        <option>Mecánica Estadística</option>
-        <option>Inferencia y modelos estadísticos</option>
-        <option>Astrofísica galáctica y cosmologia</option>
-        <option>Estructura y bases de datos</option>
-        <option>Electivo II</option>
-        <option>Procesos radiativos y difusos</option>
-        <option>Instrumentación y tecnología astronómica</option>
-        <option>Modelamiento en Astrofísica</option>
-        <option>Astrofísica y Big Data</option>
-        <option>Electivo III</option>
-        <option>Trabajo de titulación</option>
-    </select>
+  <script>
+    const courses = [
+      // Semestre 1
+      { id: "fis1", name: "Introducción a la Física I", prereqs: [], semester: 1 },
+      { id: "bm1", name: "Bases Matemáticas para la Física I", prereqs: [], semester: 1 },
+      { id: "fc1", name: "Física Computacional I", prereqs: [], semester: 1 },
+      { id: "df1", name: "Datos Físicos I", prereqs: [], semester: 1 },
+      { id: "gp", name: "Gestión Personal", prereqs: [], semester: 1 },
+      { id: "ia", name: "Introducción a la Astrofísica", prereqs: [], semester: 1 },
+      { id: "eng1", name: "Inglés I", prereqs: [], semester: 1 },
 
-    <label for="notaAprobacion">Nota mínima para aprobar:</label>
-    <input type="number" id="notaAprobacion" step="0.1" value="4.0" min="1.0" max="7.0">
+      // Semestre 2
+      { id: "fis2", name: "Introducción a la Física II", prereqs: ["fis1"], semester: 2 },
+      { id: "bm2", name: "Bases Matemáticas para la Física II", prereqs: ["bm1"], semester: 2 },
+      { id: "fc2", name: "Física Computacional II", prereqs: ["fc1"], semester: 2 },
+      { id: "df2", name: "Datos Físicos II", prereqs: ["df1"], semester: 2 },
+      { id: "cd", name: "Introducción a la Ciencia de Datos", prereqs: ["fc1"], semester: 2 },
+      { id: "cc", name: "Comunicación Científica", prereqs: ["gp"], semester: 2 },
+      { id: "eng2", name: "Inglés II", prereqs: ["eng1"], semester: 2 },
 
-    <label for="cantidadNotas">Cantidad de notas:</label>
-    <input type="number" id="cantidadNotas" min="1" max="10" value="3">
+      // Semestre 3
+      { id: "mecN", name: "Mecánica Newtoniana", prereqs: ["fis2"], semester: 3 },
+      { id: "cv", name: "Cálculo Vectorial", prereqs: ["bm2"], semester: 3 },
+      { id: "fc3", name: "Física Computacional III", prereqs: ["fc2"], semester: 3 },
+      { id: "em", name: "Estructura de la Materia", prereqs: ["fis2", "bm2"], semester: 3 },
+      { id: "termo", name: "Termodinámica", prereqs: ["fis2", "bm2"], semester: 3 },
+      { id: "ds", name: "Desarrollo de Software", prereqs: ["fc2"], semester: 3 },
+      { id: "eng3", name: "Inglés III", prereqs: ["eng2"], semester: 3 },
 
-    <button class="btn" onclick="toggleMode()">Modo: Promedio Simple</button>
+      // Semestre 4
+      { id: "emag", name: "Electromagnetismo", prereqs: ["fis2", "mecN"], semester: 4 },
+      { id: "ondas", name: "Ondas", prereqs: ["em", "termo"], semester: 4 },
+      { id: "mm1", name: "Métodos Matemáticos para la Física I", prereqs: ["cv"], semester: 4 },
+      { id: "fc4", name: "Física Computacional IV", prereqs: ["fc3"], semester: 4 },
+      { id: "iem", name: "Introducción a la Estadística Moderna", prereqs: [], semester: 4 },
+      { id: "pe", name: "Proyecto de Especialidad", prereqs: ["cc", "fis2"], semester: 4 },
+      { id: "eng4", name: "Inglés IV", prereqs: ["eng3"], semester: 4 },
 
-    <div id="notasContainer"></div>
+      // Semestre 5
+      { id: "mecC", name: "Mecánica Clásica", prereqs: ["mecN", "emag"], semester: 5 },
+      { id: "fq", name: "Fenómenos Cuánticos", prereqs: ["em"], semester: 5 },
+      { id: "mm2", name: "Métodos Matemáticos para la Física II", prereqs: ["mm1"], semester: 5 },
+      { id: "ae", name: "Astrofísica Estelar", prereqs: ["termo"], semester: 5 },
+      { id: "ao", name: "Astrofísica Observacional", prereqs: ["fis1", "ondas"], semester: 5 },
+      { id: "el1", name: "Electivo I", prereqs: [], semester: 5 },
 
-    <button class="btn" onclick="guardarCurso()">Guardar curso</button>
+      // Semestre 6
+      { id: "mf", name: "Mecánica de Fluidos", prereqs: ["termo", "mm2"], semester: 6 },
+      { id: "me", name: "Mecánica Estadística", prereqs: ["fq", "mecC"], semester: 6 },
+      { id: "ims", name: "Inferencia y Modelos Estadísticos", prereqs: ["iem"], semester: 6 },
+      { id: "agc", name: "Astrofísica Galáctica y Cosmología", prereqs: ["ao", "ae"], semester: 6 },
+      { id: "bd", name: "Estructura y Bases de Datos", prereqs: ["fc4"], semester: 6 },
+      { id: "el2", name: "Electivo II", prereqs: [], semester: 6 },
 
-    <div class="results" id="resultados"></div>
+      // Semestre 7
+      { id: "prd", name: "Procesos Radiativos y Difusos", prereqs: ["fq", "me"], semester: 7 },
+      { id: "ita", name: "Instrumentación y Tecnología Astronómica", prereqs: ["ao"], semester: 7 },
+      { id: "ma", name: "Modelamiento en Astrofísica", prereqs: ["agc"], semester: 7 },
+      { id: "abd", name: "Astrofísica y Big Data", prereqs: ["bd"], semester: 7 },
+      { id: "el3", name: "Electivo III", prereqs: [], semester: 7 },
 
-    <h2 style="margin-top:30px;">📚 Cursos guardados</h2>
-    <table id="tablaCursos">
-        <tr><th>Curso</th><th>Promedio</th><th>Acciones</th></tr>
-    </table>
-</div>
+      // Semestre 8
+      { id: "tt", name: "Trabajo de Titulación", prereqs: ["prd", "ita", "ma", "abd", "el3"], semester: 8 }
+    ];
 
-<script>
-let esPonderado = false;
+    const storageKey = "cursosAprobados";
+    let aprobados = JSON.parse(localStorage.getItem(storageKey)) || [];
 
-function toggleMode() {
-    esPonderado = !esPonderado;
-    document.querySelector(".btn").textContent = esPonderado ? "Modo: Promedio Ponderado" : "Modo: Promedio Simple";
-    generarCampos();
-}
+    function guardarProgreso() {
+      localStorage.setItem(storageKey, JSON.stringify(aprobados));
+    }
 
-document.getElementById("cantidadNotas").addEventListener("input", generarCampos);
-generarCampos();
-cargarTabla();
+    function cumplePrerrequisitos(course) {
+      return course.prereqs.every(id => aprobados.includes(id));
+    }
 
-function generarCampos(notas = [], pesos = []) {
-    const contenedor = document.getElementById("notasContainer");
-    contenedor.innerHTML = "";
-    const cantidad = parseInt(document.getElementById("cantidadNotas").value);
-    
-    for (let i = 0; i < cantidad; i++) {
-        const div = document.createElement("div");
-        div.classList.add("note-input");
-        
-        const notaInput = document.createElement("input");
-        notaInput.type = "number";
-        notaInput.step = "0.1";
-        notaInput.placeholder = "Nota (ej: 5.5)";
-        if (notas[i] !== undefined) notaInput.value = notas[i];
-        notaInput.oninput = calcular;
-        div.appendChild(notaInput);
+    function crearMalla() {
+      const container = document.getElementById("mallaContainer");
+      container.innerHTML = "";
 
-        if (esPonderado) {
-            const pesoInput = document.createElement("input");
-            pesoInput.type = "number";
-            pesoInput.step = "0.1";
-            pesoInput.placeholder = "% Peso";
-            if (pesos[i] !== undefined) pesoInput.value = pesos[i];
-            pesoInput.oninput = calcular;
-            div.appendChild(pesoInput);
+      const totalSemestres = Math.max(...courses.map(c => c.semester));
+
+      for (let s = 1; s <= totalSemestres; s++) {
+        const semestreCursos = courses.filter(c => c.semester === s);
+        const semestreDiv = document.createElement("div");
+        semestreDiv.className = "semester";
+
+        const todosAprobados = semestreCursos.every(c => aprobados.includes(c.id));
+        if (todosAprobados && semestreCursos.length > 0) {
+          semestreDiv.classList.add("complete");
         }
 
-        contenedor.appendChild(div);
-    }
-}
+        const titulo = document.createElement("h2");
+        titulo.textContent = `Semestre ${s}`;
+        semestreDiv.appendChild(titulo);
 
-function calcular() {
-    const notaAprobacion = parseFloat(document.getElementById("notaAprobacion").value);
-    const filas = document.querySelectorAll("#notasContainer .note-input");
-    let sumaPesos = 0, sumaNotas = 0, notasIngresadas = 0;
-    let notasArr = [], pesosArr = [];
+        semestreCursos.forEach(course => {
+          const aprobado = aprobados.includes(course.id);
+          const disponible = !aprobado && cumplePrerrequisitos(course);
 
-    filas.forEach(fila => {
-        const nota = parseFloat(fila.children[0].value);
-        const peso = esPonderado ? parseFloat(fila.children[1]?.value) : null;
-        notasArr.push(isNaN(nota) ? null : nota);
-        if (esPonderado) pesosArr.push(isNaN(peso) ? null : peso);
+          const courseDiv = document.createElement("div");
+          courseDiv.className = "course";
+          if (aprobado) {
+            courseDiv.classList.add("approved");
+          } else if (!disponible) {
+            courseDiv.classList.add("blocked");
+          }
 
-        if (!isNaN(nota)) {
-            notasIngresadas++;
-            if (esPonderado && !isNaN(peso)) {
-                sumaNotas += nota * peso;
-                sumaPesos += peso;
-            } else if (!esPonderado) {
-                sumaNotas += nota;
+          const nameSpan = document.createElement("span");
+          nameSpan.textContent = course.name;
+
+          const btn = document.createElement("button");
+          btn.className = "emoji-btn";
+
+          if (aprobado) {
+            btn.innerHTML = "☀️";
+            btn.disabled = false;
+          } else if (disponible) {
+            btn.innerHTML = "☁️";
+            btn.disabled = false;
+          } else {
+            btn.innerHTML = "";
+            btn.disabled = true;
+          }
+
+          btn.onclick = () => {
+            if (aprobado) {
+              aprobados = aprobados.filter(id => id !== course.id);
+            } else if (disponible) {
+              aprobados.push(course.id);
             }
-        }
-    });
+            guardarProgreso();
+            crearMalla();
+          };
 
-    let promedio = 0;
-    if (esPonderado && sumaPesos > 0) {
-        promedio = sumaNotas / sumaPesos;
-    } else if (!esPonderado && notasIngresadas > 0) {
-        promedio = sumaNotas / notasIngresadas;
+          courseDiv.appendChild(nameSpan);
+          courseDiv.appendChild(btn);
+          semestreDiv.appendChild(courseDiv);
+        });
+
+        container.appendChild(semestreDiv);
+      }
     }
-    promedio = parseFloat(promedio.toFixed(1));
 
-    let resultado = `Promedio actual: ${isNaN(promedio) ? "-" : promedio}`;
-    if (!isNaN(promedio)) {
-        if (promedio >= notaAprobacion) {
-            resultado += `<br>Aprobado`;
-        } else {
-            const notasRestantes = filas.length - notasIngresadas;
-            if (notasRestantes > 0) {
-                const puntosNecesarios = notaAprobacion * filas.length - sumaNotas;
-                const notaNecesaria = puntosNecesarios / notasRestantes;
-                if (notaNecesaria > 7) {
-                    resultado += `<br>Necesitas: Lo siento, ya no es posible aprobar.`;
-                } else {
-                    resultado += `<br>Necesitas: ${notaNecesaria.toFixed(1)} en promedio en las notas restantes.`;
-                }
-            } else {
-                resultado += `<br>Reprobado`;
-            }
-        }
-    }
-    document.getElementById("resultados").innerHTML = resultado;
-    return { promedio, notasArr, pesosArr };
-}
-
-function guardarCurso() {
-    const curso = document.getElementById("curso").value;
-    if (!curso) { alert("Selecciona un curso"); return; }
-    const { promedio, notasArr, pesosArr } = calcular();
-    if (isNaN(promedio)) { alert("Ingresa al menos una nota"); return; }
-    const datos = {
-        curso: curso,
-        promedio: promedio,
-        modo: esPonderado ? "ponderado" : "simple",
-        notaAprobacion: parseFloat(document.getElementById("notaAprobacion").value),
-        notas: notasArr,
-        pesos: esPonderado ? pesosArr : []
-    };
-    let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
-    const index = guardados.findIndex(c => c.curso === curso);
-    if (index >= 0) {
-        guardados[index] = datos;
-    } else {
-        guardados.push(datos);
-    }
-    localStorage.setItem("cursosGuardados", JSON.stringify(guardados));
-    cargarTabla();
-}
-
-function cargarTabla() {
-    const tabla = document.getElementById("tablaCursos");
-    tabla.innerHTML = `<tr><th>Curso</th><th>Promedio</th><th>Acciones</th></tr>`;
-    let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
-    guardados.forEach(c => {
-        tabla.innerHTML += `<tr>
-            <td>${c.curso}</td>
-            <td>${c.promedio}</td>
-            <td>
-                <button onclick="cargarCurso('${c.curso}')">Cargar</button>
-                <button onclick="borrarCurso('${c.curso}')">Borrar</button>
-            </td>
-        </tr>`;
-    });
-}
-
-function cargarCurso(nombre) {
-    let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
-    const curso = guardados.find(c => c.curso === nombre);
-    if (!curso) return;
-    document.getElementById("curso").value = curso.curso;
-    document.getElementById("notaAprobacion").value = curso.notaAprobacion;
-    esPonderado = curso.modo === "ponderado";
-    document.querySelector(".btn").textContent = esPonderado ? "Modo: Promedio Ponderado" : "Modo: Promedio Simple";
-    document.getElementById("cantidadNotas").value = curso.notas.length;
-    generarCampos(curso.notas, curso.pesos);
-    calcular();
-}
-
-function borrarCurso(nombre) {
-    let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
-    guardados = guardados.filter(c => c.curso !== nombre);
-    localStorage.setItem("cursosGuardados", JSON.stringify(guardados));
-    cargarTabla();
-}
-</script>
+    crearMalla();
+  </script>
 </body>
 </html>
