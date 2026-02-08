@@ -101,7 +101,10 @@
         }
 
         .btn-mode { background: var(--primary); color: white; }
-        .btn-save { background: #333; color: white; }
+        .btn-save { 
+    background: var(--primary); 
+    color: white; 
+}
         .btn:hover { opacity: 0.85; transform: translateY(-1px); }
 
         .note-input-row {
@@ -292,16 +295,16 @@
         if (nIngresadas === 0) {
             msg = "Esperando notas...";
         } else if (prom >= min && nRestantes === 0) {
-            msg += "<br>✅ ¡Felicidades! Aprobaste el curso.";
+            msg += "<br> ¡Felicidades! Aprobaste el curso.";
         } else if (prom < min && nRestantes === 0) {
-            msg += "<br>❌ Reprobado. No alcanzas el mínimo.";
+            msg += "<br> Reprobado. No alcanzas el mínimo.";
         } else if (nRestantes > 0) {
             if (!esPonderado) {
                 const puntosFaltantes = (min * nTotal) - sumaTotal;
                 const notaNecesaria = puntosFaltantes / nRestantes;
                 
                 if (notaNecesaria > 7.0) {
-                    msg += `<br>⚠️ Necesitas un <strong>${notaNecesaria.toFixed(1)}</strong>. <br>Ya no es posible aprobar matemáticamente.`;
+                    msg += `<br> Necesitas un <strong>${notaNecesaria.toFixed(1)}</strong>. <br>Ya no es posible aprobar matemáticamente.`;
                 } else if (notaNecesaria <= 1.0) {
                     msg += `<br>✨ ¡Ya aprobaste! Solo mantén el ritmo.`;
                 } else {
@@ -315,7 +318,7 @@
                     const notaNecesaria = (puntosFaltantes / pesoRestante) * 100;
                     
                     if (notaNecesaria > 7.0) {
-                        msg += `<br>⚠️ Necesitas un <strong>${notaNecesaria.toFixed(1)}</strong> en el ${pesoRestante}% restante. Muy difícil.`;
+                        msg += `<br> Necesitas un <strong>${notaNecesaria.toFixed(1)}</strong> en el ${pesoRestante}% restante. Muy difícil.`;
                     } else if (notaNecesaria <= 1.0) {
                         msg += `<br>✨ Con el peso actual ya estarías aprobando.`;
                     } else {
