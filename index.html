@@ -2,19 +2,24 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Calculadora de Notas con Guardado</title>
+<title>Calculadora de Notas Pro - Astrofísica</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
 <style>
     body {
         font-family: 'Oswald', sans-serif;
-        background-color: white;
+        background-color: #f9f9f9;
         color: black;
         text-align: center;
+        margin: 0;
+        padding: 20px;
     }
     .container {
         max-width: 650px;
         margin: auto;
         padding: 20px;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     h1 {
         background-color: #FFD60A;
@@ -22,15 +27,17 @@
         padding: 15px;
         border-radius: 10px;
         font-size: 28px;
+        margin-top: 0;
     }
     label {
         display: block;
         margin-top: 15px;
         font-size: 18px;
         text-align: left;
+        font-weight: bold;
     }
     input, select {
-        padding: 8px;
+        padding: 10px;
         font-size: 16px;
         width: 100%;
         margin-top: 5px;
@@ -39,33 +46,46 @@
         text-align: center;
         font-family: 'Oswald', sans-serif;
         background-color: white;
-        color: black;
+        box-sizing: border-box;
     }
+    
+    /* Estilos para el selector y sus grupos */
     .yellow-select {
-        background-color: #FFD60A;
-        color: white;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        background-size: 16px;
+        background-color: white;
+        cursor: pointer;
     }
+    optgroup {
+        background-color: #f0f0f0;
+        color: #333;
+        font-style: normal;
+        font-weight: bold;
+        text-align: center;
+    }
+    option {
+        background-color: white;
+        color: black;
+        text-align: left;
+        padding: 5px;
+    }
+
     .btn {
         margin-top: 15px;
         background-color: #FFD60A;
         color: white;
         border: none;
-        padding: 10px;
+        padding: 12px;
         font-size: 16px;
         cursor: pointer;
         border-radius: 8px;
         font-family: 'Oswald', sans-serif;
         width: 100%;
+        transition: 0.3s;
+        text-transform: uppercase;
+        font-weight: bold;
     }
     .btn:hover {
-        opacity: 0.85;
+        background-color: #e6c109;
+        transform: translateY(-1px);
     }
     .results {
         margin-top: 20px;
@@ -73,7 +93,8 @@
         border-radius: 10px;
         background-color: #FFD60A;
         color: white;
-        font-size: 18px;
+        font-size: 20px;
+        font-weight: bold;
     }
     .note-input {
         display: flex;
@@ -82,17 +103,18 @@
         gap: 10px;
     }
     .note-input input {
-        width: 48%;
+        width: 100%;
     }
     table {
         width: 100%;
         margin-top: 20px;
         border-collapse: collapse;
+        background: white;
     }
     th, td {
         border: 1px solid #FFD60A;
-        padding: 8px;
-        font-size: 14px;
+        padding: 10px;
+        font-size: 15px;
     }
     th {
         background-color: #FFD60A;
@@ -102,66 +124,89 @@
         background-color: #FFD60A;
         color: white;
         border: none;
-        padding: 5px 8px;
+        padding: 5px 10px;
         cursor: pointer;
         border-radius: 5px;
         font-family: 'Oswald', sans-serif;
+        margin: 2px;
     }
 </style>
 </head>
 <body>
+
 <div class="container">
     <h1>Calculadora de Notas</h1>
 
     <label for="curso">Selecciona el curso:</label>
     <select id="curso" class="yellow-select">
-        <option value="">-- Selecciona un curso --</option>
-        <option>Introducción a la Física I</option>
-        <option>Bases Matemáticas para la Física I</option>
-        <option>Física Computacional I</option>
-        <option>Datos Físicos I</option>
-        <option>Gestión Personal</option>
-        <option>Introducción a la Astrofisica</option>
-        <option>Inglés I</option>
-        <option>Introducción a la Física II</option>
-        <option>Bases Matemáticas para la Física II</option>
-        <option>Física Computacional II</option>
-        <option>Datos Físicos II</option>
-        <option>Introducción a la Ciencia de Datos</option>
-        <option>Comunicación científica</option>
-        <option>Inglés II</option>
-        <option>Mecánica Newtoniana</option>
-        <option>Cálculo Vectorial</option>
-        <option>Física Computacional III</option>
-        <option>Estructura de la Materia</option>
-        <option>Termodinamica</option>
-        <option>Desarrollo de Software</option>
-        <option>Inglés III</option>
-        <option>Electromagnetismo</option>
-        <option>Ondas</option>
-        <option>Métodos Matemáticos para la Física I</option>
-        <option>Física Computacional IV</option>
-        <option>Introducción a la Estadística Moderna</option>
-        <option>Proyecto de Especialidad</option>
-        <option>Inglés IV</option>
-        <option>Mecánica Clásica</option>
-        <option>Fenómenos cuánticos</option>
-        <option>Métodos Matemáticos para la Física II</option>
-        <option>Astrofísica Estelar</option>
-        <option>Astrofísica Observacional</option>
-        <option>Electivo I</option>
-        <option>Mecanica de Fluidos</option>
-        <option>Mecánica Estadística</option>
-        <option>Inferencia y modelos estadísticos</option>
-        <option>Astrofísica galáctica y cosmologia</option>
-        <option>Estructura y bases de datos</option>
-        <option>Electivo II</option>
-        <option>Procesos radiativos y difusos</option>
-        <option>Instrumentación y tecnología astronómica</option>
-        <option>Modelamiento en Astrofísica</option>
-        <option>Astrofísica y Big Data</option>
-        <option>Electivo III</option>
-        <option>Trabajo de titulación</option>
+        <option value="" disabled selected>Selecciona un curso</option>
+        
+        <optgroup label="─── SEMESTRE I ───">
+            <option>Introducción a la Física I</option>
+            <option>Bases Matemáticas para la Física I</option>
+            <option>Física Computacional I</option>
+            <option>Datos Físicos I</option>
+            <option>Gestión Personal</option>
+            <option>Introducción a la Astrofisica</option>
+            <option>Inglés I</option>
+        </optgroup>
+
+        <optgroup label="─── SEMESTRE II ───">
+            <option>Introducción a la Física II</option>
+            <option>Bases Matemáticas para la Física II</option>
+            <option>Física Computacional II</option>
+            <option>Datos Físicos II</option>
+            <option>Introducción a la Ciencia de Datos</option>
+            <option>Comunicación científica</option>
+            <option>Inglés II</option>
+        </optgroup>
+
+        <optgroup label="─── SEMESTRE III ───">
+            <option>Mecánica Newtoniana</option>
+            <option>Cálculo Vectorial</option>
+            <option>Física Computacional III</option>
+            <option>Estructura de la Materia</option>
+            <option>Termodinamica</option>
+            <option>Desarrollo de Software</option>
+            <option>Inglés III</option>
+        </optgroup>
+
+        <optgroup label="─── SEMESTRE IV ───">
+            <option>Electromagnetismo</option>
+            <option>Ondas</option>
+            <option>Métodos Matemáticos para la Física I</option>
+            <option>Física Computacional IV</option>
+            <option>Introducción a la Estadística Moderna</option>
+            <option>Proyecto de Especialidad</option>
+            <option>Inglés IV</option>
+        </optgroup>
+
+        <optgroup label="─── SEMESTRE V ───">
+            <option>Mecánica Clásica</option>
+            <option>Fenómenos cuánticos</option>
+            <option>Métodos Matemáticos para la Física II</option>
+            <option>Astrofísica Estelar</option>
+            <option>Astrofísica Observacional</option>
+            <option>Electivo I</option>
+        </optgroup>
+
+        <optgroup label="─── SEMESTRE VI ───">
+            <option>Mecanica de Fluidos</option>
+            <option>Mecánica Estadística</option>
+            <option>Inferencia y modelos estadísticos</option>
+            <option>Astrofísica galáctica y cosmologia</option>
+            <option>Estructura y bases de datos</option>
+            <option>Electivo II</option>
+        </optgroup>
+
+        <optgroup label="─── SEMESTRE VII+ ───">
+            <option>Procesos radiativos y difusos</option>
+            <option>Instrumentación y tecnología astronómica</option>
+            <option>Modelamiento en Astrofísica</option>
+            <option>Astrofísica y Big Data</option>
+            <option>Electivo III</option>
+            <option>Trabajo de titulación</option>
+        </optgroup>
     </select>
 
     <label for="notaAprobacion">Nota mínima para aprobar:</label>
@@ -170,15 +215,15 @@
     <label for="cantidadNotas">Cantidad de notas:</label>
     <input type="number" id="cantidadNotas" min="1" max="10" value="3">
 
-    <button class="btn" onclick="toggleMode()">Modo: Promedio Simple</button>
+    <button class="btn" id="btnModo" onclick="toggleMode()">Modo: Promedio Simple</button>
 
     <div id="notasContainer"></div>
 
-    <button class="btn" onclick="guardarCurso()">Guardar curso</button>
+    <button class="btn" onclick="guardarCurso()" style="background-color: #222;">Guardar curso en historial</button>
 
-    <div class="results" id="resultados"></div>
+    <div class="results" id="resultados">Ingresa tus notas para calcular</div>
 
-    <h2 style="margin-top:30px;">📚 Cursos guardados</h2>
+    <h2 style="margin-top:30px; color: #333;">📚 Cursos guardados</h2>
     <table id="tablaCursos">
         <tr><th>Curso</th><th>Promedio</th><th>Acciones</th></tr>
     </table>
@@ -189,18 +234,20 @@ let esPonderado = false;
 
 function toggleMode() {
     esPonderado = !esPonderado;
-    document.querySelector(".btn").textContent = esPonderado ? "Modo: Promedio Ponderado" : "Modo: Promedio Simple";
+    document.getElementById("btnModo").textContent = esPonderado ? "Modo: Promedio Ponderado" : "Modo: Promedio Simple";
     generarCampos();
 }
 
 document.getElementById("cantidadNotas").addEventListener("input", generarCampos);
+
+// Generar campos iniciales
 generarCampos();
 cargarTabla();
 
 function generarCampos(notas = [], pesos = []) {
     const contenedor = document.getElementById("notasContainer");
     contenedor.innerHTML = "";
-    const cantidad = parseInt(document.getElementById("cantidadNotas").value);
+    const cantidad = parseInt(document.getElementById("cantidadNotas").value) || 0;
     
     for (let i = 0; i < cantidad; i++) {
         const div = document.createElement("div");
@@ -209,17 +256,17 @@ function generarCampos(notas = [], pesos = []) {
         const notaInput = document.createElement("input");
         notaInput.type = "number";
         notaInput.step = "0.1";
-        notaInput.placeholder = "Nota (ej: 5.5)";
-        if (notas[i] !== undefined) notaInput.value = notas[i];
+        notaInput.placeholder = `Nota ${i+1}`;
+        if (notas[i] !== undefined && notas[i] !== null) notaInput.value = notas[i];
         notaInput.oninput = calcular;
         div.appendChild(notaInput);
 
         if (esPonderado) {
             const pesoInput = document.createElement("input");
             pesoInput.type = "number";
-            pesoInput.step = "0.1";
+            pesoInput.step = "1";
             pesoInput.placeholder = "% Peso";
-            if (pesos[i] !== undefined) pesoInput.value = pesos[i];
+            if (pesos[i] !== undefined && pesos[i] !== null) pesoInput.value = pesos[i];
             pesoInput.oninput = calcular;
             div.appendChild(pesoInput);
         }
@@ -237,13 +284,14 @@ function calcular() {
     filas.forEach(fila => {
         const nota = parseFloat(fila.children[0].value);
         const peso = esPonderado ? parseFloat(fila.children[1]?.value) : null;
+        
         notasArr.push(isNaN(nota) ? null : nota);
         if (esPonderado) pesosArr.push(isNaN(peso) ? null : peso);
 
         if (!isNaN(nota)) {
             notasIngresadas++;
             if (esPonderado && !isNaN(peso)) {
-                sumaNotas += nota * peso;
+                sumaNotas += (nota * (peso / 100));
                 sumaPesos += peso;
             } else if (!esPonderado) {
                 sumaNotas += nota;
@@ -252,26 +300,36 @@ function calcular() {
     });
 
     let promedio = 0;
-    if (esPonderado && sumaPesos > 0) {
-        promedio = sumaNotas / sumaPesos;
-    } else if (!esPonderado && notasIngresadas > 0) {
+    if (esPonderado) {
+        promedio = sumaNotas; // Ya está ponderado por el %
+        if (sumaPesos < 100 && sumaPesos > 0) {
+            // Si no llegamos al 100%, calculamos el promedio relativo
+            promedio = (sumaNotas / sumaPesos) * 100;
+        }
+    } else if (notasIngresadas > 0) {
         promedio = sumaNotas / notasIngresadas;
     }
+    
     promedio = parseFloat(promedio.toFixed(1));
 
-    let resultado = `Promedio actual: ${isNaN(promedio) ? "-" : promedio}`;
-    if (!isNaN(promedio)) {
+    let resultado = `Promedio actual: ${isNaN(promedio) || notasIngresadas === 0 ? "-" : promedio}`;
+    
+    if (!isNaN(promedio) && notasIngresadas > 0) {
         if (promedio >= notaAprobacion) {
-            resultado += `<br>✅ Aprobado`;
+            resultado += `<br>✅ ¡Vas aprobando!`;
         } else {
             const notasRestantes = filas.length - notasIngresadas;
             if (notasRestantes > 0) {
-                const puntosNecesarios = notaAprobacion * filas.length - sumaNotas;
-                const notaNecesaria = puntosNecesarios / notasRestantes;
-                if (notaNecesaria > 7) {
-                    resultado += `<br>Necesitas: Lo siento, ya no es posible aprobar.`;
+                if (!esPonderado) {
+                    const puntosNecesarios = (notaAprobacion * filas.length) - sumaNotas;
+                    const notaNecesaria = puntosNecesarios / notasRestantes;
+                    if (notaNecesaria > 7) {
+                        resultado += `<br>⚠️ Necesitas: ${notaNecesaria.toFixed(1)} (Casi imposible)`;
+                    } else {
+                        resultado += `<br>Necesitas: ${notaNecesaria.toFixed(1)} promedio en lo que falta.`;
+                    }
                 } else {
-                    resultado += `<br>Necesitas: ${notaNecesaria.toFixed(1)} en promedio en las notas restantes.`;
+                    resultado += `<br>Falta completar el 100% del peso.`;
                 }
             } else {
                 resultado += `<br>❌ Reprobado`;
@@ -284,9 +342,13 @@ function calcular() {
 
 function guardarCurso() {
     const curso = document.getElementById("curso").value;
-    if (!curso) { alert("Selecciona un curso"); return; }
+    if (!curso) { alert("Por favor, selecciona un curso de la lista."); return; }
+    
     const { promedio, notasArr, pesosArr } = calcular();
-    if (isNaN(promedio)) { alert("Ingresa al menos una nota"); return; }
+    if (isNaN(promedio) || notasArr.filter(n => n !== null).length === 0) { 
+        alert("Ingresa al menos una nota para guardar."); return; 
+    }
+
     const datos = {
         curso: curso,
         promedio: promedio,
@@ -295,13 +357,16 @@ function guardarCurso() {
         notas: notasArr,
         pesos: esPonderado ? pesosArr : []
     };
+
     let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
     const index = guardados.findIndex(c => c.curso === curso);
+    
     if (index >= 0) {
         guardados[index] = datos;
     } else {
         guardados.push(datos);
     }
+    
     localStorage.setItem("cursosGuardados", JSON.stringify(guardados));
     cargarTabla();
 }
@@ -310,15 +375,18 @@ function cargarTabla() {
     const tabla = document.getElementById("tablaCursos");
     tabla.innerHTML = `<tr><th>Curso</th><th>Promedio</th><th>Acciones</th></tr>`;
     let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
+    
     guardados.forEach(c => {
-        tabla.innerHTML += `<tr>
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
             <td>${c.curso}</td>
             <td>${c.promedio}</td>
             <td>
                 <button onclick="cargarCurso('${c.curso}')">Cargar</button>
-                <button onclick="borrarCurso('${c.curso}')">Borrar</button>
+                <button onclick="borrarCurso('${c.curso}')" style="background-color: #ff4d4d;">Borrar</button>
             </td>
-        </tr>`;
+        `;
+        tabla.appendChild(tr);
     });
 }
 
@@ -326,21 +394,25 @@ function cargarCurso(nombre) {
     let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
     const curso = guardados.find(c => c.curso === nombre);
     if (!curso) return;
+
     document.getElementById("curso").value = curso.curso;
     document.getElementById("notaAprobacion").value = curso.notaAprobacion;
     esPonderado = curso.modo === "ponderado";
-    document.querySelector(".btn").textContent = esPonderado ? "Modo: Promedio Ponderado" : "Modo: Promedio Simple";
+    document.getElementById("btnModo").textContent = esPonderado ? "Modo: Promedio Ponderado" : "Modo: Promedio Simple";
     document.getElementById("cantidadNotas").value = curso.notas.length;
+    
     generarCampos(curso.notas, curso.pesos);
     calcular();
 }
 
 function borrarCurso(nombre) {
+    if(!confirm(`¿Estás seguro de borrar ${nombre}?`)) return;
     let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
     guardados = guardados.filter(c => c.curso !== nombre);
     localStorage.setItem("cursosGuardados", JSON.stringify(guardados));
     cargarTabla();
 }
 </script>
+
 </body>
 </html>
