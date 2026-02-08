@@ -1,146 +1,164 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Calculadora de Notas Pro - Astrofísica</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
-<style>
-    body {
-        font-family: 'Oswald', sans-serif;
-        background-color: #f9f9f9;
-        color: black;
-        text-align: center;
-        margin: 0;
-        padding: 20px;
-    }
-    .container {
-        max-width: 650px;
-        margin: auto;
-        padding: 20px;
-        background-color: white;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    h1 {
-        background-color: #FFD60A;
-        color: white;
-        padding: 15px;
-        border-radius: 10px;
-        font-size: 28px;
-        margin-top: 0;
-    }
-    label {
-        display: block;
-        margin-top: 15px;
-        font-size: 18px;
-        text-align: left;
-        font-weight: bold;
-    }
-    input, select {
-        padding: 10px;
-        font-size: 16px;
-        width: 100%;
-        margin-top: 5px;
-        border-radius: 8px;
-        border: 2px solid #FFD60A;
-        text-align: center;
-        font-family: 'Oswald', sans-serif;
-        background-color: white;
-        box-sizing: border-box;
-    }
-    
-    /* Estilos para el selector y sus grupos */
-    .yellow-select {
-        background-color: white;
-        cursor: pointer;
-    }
-    optgroup {
-        background-color: #f0f0f0;
-        color: #333;
-        font-style: normal;
-        font-weight: bold;
-        text-align: center;
-    }
-    option {
-        background-color: white;
-        color: black;
-        text-align: left;
-        padding: 5px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Notas Pro - Astrofísica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FFD60A;
+            --primary-dark: #e6c109;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --bg: #f4f4f9;
+        }
 
-    .btn {
-        margin-top: 15px;
-        background-color: #FFD60A;
-        color: white;
-        border: none;
-        padding: 12px;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 8px;
-        font-family: 'Oswald', sans-serif;
-        width: 100%;
-        transition: 0.3s;
-        text-transform: uppercase;
-        font-weight: bold;
-    }
-    .btn:hover {
-        background-color: #e6c109;
-        transform: translateY(-1px);
-    }
-    .results {
-        margin-top: 20px;
-        padding: 15px;
-        border-radius: 10px;
-        background-color: #FFD60A;
-        color: white;
-        font-size: 20px;
-        font-weight: bold;
-    }
-    .note-input {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-        gap: 10px;
-    }
-    .note-input input {
-        width: 100%;
-    }
-    table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
-        background: white;
-    }
-    th, td {
-        border: 1px solid #FFD60A;
-        padding: 10px;
-        font-size: 15px;
-    }
-    th {
-        background-color: #FFD60A;
-        color: white;
-    }
-    td button {
-        background-color: #FFD60A;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 5px;
-        font-family: 'Oswald', sans-serif;
-        margin: 2px;
-    }
-</style>
+        body {
+            font-family: 'Oswald', sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: -10px 0 25px 0;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        optgroup {
+            background: #eee;
+            font-weight: bold;
+        }
+
+        /* --- Estilos de la Barra de Progreso --- */
+        .progress-wrapper {
+            margin: 25px 0;
+            background: #eee;
+            border-radius: 50px;
+            height: 30px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--danger);
+            transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-mode { background: var(--primary); color: white; }
+        .btn-save { background: #333; color: white; }
+        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
+
+        .note-input-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .results-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            font-size: 1.2rem;
+            min-height: 50px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        th { background: var(--primary); color: white; padding: 12px; }
+        td { padding: 10px; border-bottom: 1px solid #ddd; }
+
+        .action-btns button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Oswald';
+            margin: 0 2px;
+        }
+        .btn-load { background: var(--primary); color: white; }
+        .btn-del { background: #ff4444; color: white; }
+    </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Calculadora de Notas</h1>
 
-    <label for="curso">Selecciona el curso:</label>
-    <select id="curso" class="yellow-select">
+    <label>Asignatura:</label>
+    <select id="curso">
         <option value="" disabled selected>Selecciona un curso</option>
-        
         <optgroup label="─── SEMESTRE I ───">
             <option>Introducción a la Física I</option>
             <option>Bases Matemáticas para la Física I</option>
@@ -150,7 +168,6 @@
             <option>Introducción a la Astrofisica</option>
             <option>Inglés I</option>
         </optgroup>
-
         <optgroup label="─── SEMESTRE II ───">
             <option>Introducción a la Física II</option>
             <option>Bases Matemáticas para la Física II</option>
@@ -160,7 +177,6 @@
             <option>Comunicación científica</option>
             <option>Inglés II</option>
         </optgroup>
-
         <optgroup label="─── SEMESTRE III ───">
             <option>Mecánica Newtoniana</option>
             <option>Cálculo Vectorial</option>
@@ -170,248 +186,210 @@
             <option>Desarrollo de Software</option>
             <option>Inglés III</option>
         </optgroup>
-
-        <optgroup label="─── SEMESTRE IV ───">
+        <optgroup label="─── SEMESTRE IV+ ───">
             <option>Electromagnetismo</option>
             <option>Ondas</option>
-            <option>Métodos Matemáticos para la Física I</option>
-            <option>Física Computacional IV</option>
-            <option>Introducción a la Estadística Moderna</option>
-            <option>Proyecto de Especialidad</option>
-            <option>Inglés IV</option>
-        </optgroup>
-
-        <optgroup label="─── SEMESTRE V ───">
-            <option>Mecánica Clásica</option>
-            <option>Fenómenos cuánticos</option>
-            <option>Métodos Matemáticos para la Física II</option>
+            <option>Métodos Matemáticos I</option>
             <option>Astrofísica Estelar</option>
-            <option>Astrofísica Observacional</option>
-            <option>Electivo I</option>
-        </optgroup>
-
-        <optgroup label="─── SEMESTRE VI ───">
-            <option>Mecanica de Fluidos</option>
-            <option>Mecánica Estadística</option>
-            <option>Inferencia y modelos estadísticos</option>
-            <option>Astrofísica galáctica y cosmologia</option>
-            <option>Estructura y bases de datos</option>
-            <option>Electivo II</option>
-        </optgroup>
-
-        <optgroup label="─── SEMESTRE VII+ ───">
-            <option>Procesos radiativos y difusos</option>
-            <option>Instrumentación y tecnología astronómica</option>
-            <option>Modelamiento en Astrofísica</option>
-            <option>Astrofísica y Big Data</option>
-            <option>Electivo III</option>
+            <option>Astrofísica Galáctica</option>
             <option>Trabajo de titulación</option>
         </optgroup>
     </select>
 
-    <label for="notaAprobacion">Nota mínima para aprobar:</label>
-    <input type="number" id="notaAprobacion" step="0.1" value="4.0" min="1.0" max="7.0">
+    <div style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+            <label>Mínimo Aprobar:</label>
+            <input type="number" id="notaAprobacion" step="0.1" value="4.0">
+        </div>
+        <div style="flex: 1;">
+            <label>N° de Notas:</label>
+            <input type="number" id="cantidadNotas" min="1" max="15" value="3">
+        </div>
+    </div>
 
-    <label for="cantidadNotas">Cantidad de notas:</label>
-    <input type="number" id="cantidadNotas" min="1" max="10" value="3">
-
-    <button class="btn" id="btnModo" onclick="toggleMode()">Modo: Promedio Simple</button>
+    <button class="btn btn-mode" id="btnModo" onclick="toggleMode()">Modo: Promedio Simple</button>
 
     <div id="notasContainer"></div>
 
-    <button class="btn" onclick="guardarCurso()" style="background-color: #222;">Guardar curso en historial</button>
+    <div class="progress-wrapper">
+        <div id="barraProgreso" class="progress-bar">0.0</div>
+    </div>
 
-    <div class="results" id="resultados">Ingresa tus notas para calcular</div>
+    <div class="results-box" id="resultados">Esperando notas...</div>
 
-    <h2 style="margin-top:30px; color: #333;">📚 Cursos guardados</h2>
+    <button class="btn btn-save" onclick="guardarCurso()">Guardar en Historial</button>
+
+    <h2>📚 Mis Cursos</h2>
     <table id="tablaCursos">
-        <tr><th>Curso</th><th>Promedio</th><th>Acciones</th></tr>
+        <thead>
+            <tr><th>Curso</th><th>Nota</th><th>Acciones</th></tr>
+        </thead>
+        <tbody id="cuerpoTabla"></tbody>
     </table>
 </div>
 
 <script>
-let esPonderado = false;
+    let esPonderado = false;
 
-function toggleMode() {
-    esPonderado = !esPonderado;
-    document.getElementById("btnModo").textContent = esPonderado ? "Modo: Promedio Ponderado" : "Modo: Promedio Simple";
+    // Inicialización
+    document.getElementById("cantidadNotas").addEventListener("input", generarCampos);
     generarCampos();
-}
+    cargarTabla();
 
-document.getElementById("cantidadNotas").addEventListener("input", generarCampos);
-
-// Generar campos iniciales
-generarCampos();
-cargarTabla();
-
-function generarCampos(notas = [], pesos = []) {
-    const contenedor = document.getElementById("notasContainer");
-    contenedor.innerHTML = "";
-    const cantidad = parseInt(document.getElementById("cantidadNotas").value) || 0;
-    
-    for (let i = 0; i < cantidad; i++) {
-        const div = document.createElement("div");
-        div.classList.add("note-input");
-        
-        const notaInput = document.createElement("input");
-        notaInput.type = "number";
-        notaInput.step = "0.1";
-        notaInput.placeholder = `Nota ${i+1}`;
-        if (notas[i] !== undefined && notas[i] !== null) notaInput.value = notas[i];
-        notaInput.oninput = calcular;
-        div.appendChild(notaInput);
-
-        if (esPonderado) {
-            const pesoInput = document.createElement("input");
-            pesoInput.type = "number";
-            pesoInput.step = "1";
-            pesoInput.placeholder = "% Peso";
-            if (pesos[i] !== undefined && pesos[i] !== null) pesoInput.value = pesos[i];
-            pesoInput.oninput = calcular;
-            div.appendChild(pesoInput);
-        }
-
-        contenedor.appendChild(div);
+    function toggleMode() {
+        esPonderado = !esPonderado;
+        document.getElementById("btnModo").textContent = esPonderado ? "Modo: Promedio Ponderado" : "Modo: Promedio Simple";
+        generarCampos();
     }
-}
 
-function calcular() {
-    const notaAprobacion = parseFloat(document.getElementById("notaAprobacion").value);
-    const filas = document.querySelectorAll("#notasContainer .note-input");
-    let sumaPesos = 0, sumaNotas = 0, notasIngresadas = 0;
-    let notasArr = [], pesosArr = [];
+    function generarCampos(notas = [], pesos = []) {
+        const contenedor = document.getElementById("notasContainer");
+        contenedor.innerHTML = "";
+        const cantidad = parseInt(document.getElementById("cantidadNotas").value) || 0;
 
-    filas.forEach(fila => {
-        const nota = parseFloat(fila.children[0].value);
-        const peso = esPonderado ? parseFloat(fila.children[1]?.value) : null;
-        
-        notasArr.push(isNaN(nota) ? null : nota);
-        if (esPonderado) pesosArr.push(isNaN(peso) ? null : peso);
+        for (let i = 0; i < cantidad; i++) {
+            const div = document.createElement("div");
+            div.className = "note-input-row";
 
-        if (!isNaN(nota)) {
-            notasIngresadas++;
-            if (esPonderado && !isNaN(peso)) {
-                sumaNotas += (nota * (peso / 100));
-                sumaPesos += peso;
-            } else if (!esPonderado) {
-                sumaNotas += nota;
+            const nInput = document.createElement("input");
+            nInput.type = "number"; nInput.step = "0.1"; nInput.placeholder = `Nota ${i+1}`;
+            if (notas[i] !== undefined) nInput.value = notas[i];
+            nInput.oninput = calcular;
+            div.appendChild(nInput);
+
+            if (esPonderado) {
+                const pInput = document.createElement("input");
+                pInput.type = "number"; pInput.placeholder = "% Peso";
+                if (pesos[i] !== undefined) pInput.value = pesos[i];
+                pInput.oninput = calcular;
+                div.appendChild(pInput);
             }
+            contenedor.appendChild(div);
         }
-    });
-
-    let promedio = 0;
-    if (esPonderado) {
-        promedio = sumaNotas; // Ya está ponderado por el %
-        if (sumaPesos < 100 && sumaPesos > 0) {
-            // Si no llegamos al 100%, calculamos el promedio relativo
-            promedio = (sumaNotas / sumaPesos) * 100;
-        }
-    } else if (notasIngresadas > 0) {
-        promedio = sumaNotas / notasIngresadas;
+        calcular();
     }
-    
-    promedio = parseFloat(promedio.toFixed(1));
 
-    let resultado = `Promedio actual: ${isNaN(promedio) || notasIngresadas === 0 ? "-" : promedio}`;
-    
-    if (!isNaN(promedio) && notasIngresadas > 0) {
-        if (promedio >= notaAprobacion) {
-            resultado += `<br>✅ ¡Vas aprobando!`;
-        } else {
-            const notasRestantes = filas.length - notasIngresadas;
-            if (notasRestantes > 0) {
-                if (!esPonderado) {
-                    const puntosNecesarios = (notaAprobacion * filas.length) - sumaNotas;
-                    const notaNecesaria = puntosNecesarios / notasRestantes;
-                    if (notaNecesaria > 7) {
-                        resultado += `<br>⚠️ Necesitas: ${notaNecesaria.toFixed(1)} (Casi imposible)`;
-                    } else {
-                        resultado += `<br>Necesitas: ${notaNecesaria.toFixed(1)} promedio en lo que falta.`;
-                    }
+    function calcular() {
+        const minAprobar = parseFloat(document.getElementById("notaAprobacion").value) || 4.0;
+        const filas = document.querySelectorAll(".note-input-row");
+        let sumaPonderada = 0;
+        let sumaPesos = 0;
+        let sumaSimple = 0;
+        let notasContadas = 0;
+
+        filas.forEach(fila => {
+            const nota = parseFloat(fila.children[0].value);
+            if (!isNaN(nota)) {
+                if (esPonderado) {
+                    const peso = parseFloat(fila.children[1].value) || 0;
+                    sumaPonderada += (nota * (peso / 100));
+                    sumaPesos += peso;
                 } else {
-                    resultado += `<br>Falta completar el 100% del peso.`;
+                    sumaSimple += nota;
+                    notasContadas++;
                 }
-            } else {
-                resultado += `<br>❌ Reprobado`;
             }
+        });
+
+        let promedioFinal = 0;
+        if (esPonderado) {
+            promedioFinal = sumaPesos > 0 ? (sumaPonderada / sumaPesos) * 100 : 0;
+        } else {
+            promedioFinal = notasContadas > 0 ? sumaSimple / notasContadas : 0;
+        }
+
+        promedioFinal = parseFloat(promedioFinal.toFixed(1));
+        actualizarInterfaz(promedioFinal, minAprobar, notasContadas, sumaPesos);
+        return promedioFinal;
+    }
+
+    function actualizarInterfaz(prom, min, cant, pesos) {
+        const barra = document.getElementById("barraProgreso");
+        const resBox = document.getElementById("resultados");
+
+        // Actualizar Barra (escala 1 a 7)
+        let porcentajeColor = (prom / 7) * 100;
+        barra.style.width = Math.min(porcentajeColor, 100) + "%";
+        barra.textContent = prom > 0 ? prom : "";
+        
+        if (prom >= min) {
+            barra.style.backgroundColor = "#4CAF50"; // Verde
+            resBox.innerHTML = `Promedio: ${prom} <br> <span style="font-size: 0.9rem">✅ ¡Vas súper bien!</span>`;
+        } else {
+            barra.style.backgroundColor = prom >= min - 1 ? "#FF9800" : "#f44336"; // Naranja o Rojo
+            resBox.innerHTML = `Promedio: ${prom} <br> <span style="font-size: 0.9rem">⚠️ Bajo el mínimo (${min})</span>`;
         }
     }
-    document.getElementById("resultados").innerHTML = resultado;
-    return { promedio, notasArr, pesosArr };
-}
 
-function guardarCurso() {
-    const curso = document.getElementById("curso").value;
-    if (!curso) { alert("Por favor, selecciona un curso de la lista."); return; }
-    
-    const { promedio, notasArr, pesosArr } = calcular();
-    if (isNaN(promedio) || notasArr.filter(n => n !== null).length === 0) { 
-        alert("Ingresa al menos una nota para guardar."); return; 
+    function guardarCurso() {
+        const curso = document.getElementById("curso").value;
+        if (!curso) return alert("Selecciona una asignatura primero");
+
+        const prom = calcular();
+        const filas = document.querySelectorAll(".note-input-row");
+        let notasArr = [], pesosArr = [];
+
+        filas.forEach(f => {
+            notasArr.push(f.children[0].value);
+            if(esPonderado) pesosArr.push(f.children[1].value);
+        });
+
+        const data = {
+            id: curso,
+            promedio: prom,
+            modo: esPonderado ? 'ponderado' : 'simple',
+            notas: notasArr,
+            pesos: pesosArr,
+            min: document.getElementById("notaAprobacion").value
+        };
+
+        let historial = JSON.parse(localStorage.getItem("misNotas")) || [];
+        const index = historial.findIndex(i => i.id === curso);
+        if (index > -1) historial[index] = data; else historial.push(data);
+
+        localStorage.setItem("misNotas", JSON.stringify(historial));
+        cargarTabla();
     }
 
-    const datos = {
-        curso: curso,
-        promedio: promedio,
-        modo: esPonderado ? "ponderado" : "simple",
-        notaAprobacion: parseFloat(document.getElementById("notaAprobacion").value),
-        notas: notasArr,
-        pesos: esPonderado ? pesosArr : []
-    };
+    function cargarTabla() {
+        const tabla = document.getElementById("cuerpoTabla");
+        tabla.innerHTML = "";
+        let historial = JSON.parse(localStorage.getItem("misNotas")) || [];
 
-    let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
-    const index = guardados.findIndex(c => c.curso === curso);
-    
-    if (index >= 0) {
-        guardados[index] = datos;
-    } else {
-        guardados.push(datos);
+        historial.forEach(item => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${item.id}</td>
+                <td style="font-weight:bold; color:${item.promedio >= item.min ? 'green' : 'red'}">${item.promedio}</td>
+                <td class="action-btns">
+                    <button class="btn-load" onclick="cargarCurso('${item.id}')">Ver</button>
+                    <button class="btn-del" onclick="borrarCurso('${item.id}')">✕</button>
+                </td>
+            `;
+            tabla.appendChild(tr);
+        });
     }
-    
-    localStorage.setItem("cursosGuardados", JSON.stringify(guardados));
-    cargarTabla();
-}
 
-function cargarTabla() {
-    const tabla = document.getElementById("tablaCursos");
-    tabla.innerHTML = `<tr><th>Curso</th><th>Promedio</th><th>Acciones</th></tr>`;
-    let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
-    
-    guardados.forEach(c => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${c.curso}</td>
-            <td>${c.promedio}</td>
-            <td>
-                <button onclick="cargarCurso('${c.curso}')">Cargar</button>
-                <button onclick="borrarCurso('${c.curso}')" style="background-color: #ff4d4d;">Borrar</button>
-            </td>
-        `;
-        tabla.appendChild(tr);
-    });
-}
+    function cargarCurso(id) {
+        let historial = JSON.parse(localStorage.getItem("misNotas")) || [];
+        const item = historial.find(i => i.id === id);
+        if (!item) return;
 
-function cargarCurso(nombre) {
-    let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
-    const curso = guardados.find(c => c.curso === nombre);
-    if (!curso) return;
+        document.getElementById("curso").value = item.id;
+        document.getElementById("notaAprobacion").value = item.min;
+        esPonderado = (item.modo === 'ponderado');
+        document.getElementById("btnModo").textContent = esPonderado ? "Modo: Promedio Ponderado" : "Modo: Promedio Simple";
+        document.getElementById("cantidadNotas").value = item.notas.length;
+        generarCampos(item.notas, item.pesos);
+    }
 
-    document.getElementById("curso").value = curso.curso;
-    document.getElementById("notaAprobacion").value = curso.notaAprobacion;
-    esPonderado = curso.modo === "ponderado";
-    document.getElementById("btnModo").textContent = esPonderado ? "Modo: Promedio Ponderado" : "Modo: Promedio Simple";
-    document.getElementById("cantidadNotas").value = curso.notas.length;
-    
-    generarCampos(curso.notas, curso.pesos);
-    calcular();
-}
-
-function borrarCurso(nombre) {
-    if(!confirm(`¿Estás seguro de borrar ${nombre}?`)) return;
-    let guardados = JSON.parse(localStorage.getItem("cursosGuardados")) || [];
-    guardados = guardados.filter(c => c.curso !== nombre);
-    localStorage.setItem("cursosGuardados", JSON.stringify(guardados));
-    cargarTabla();
-}
+    function borrarCurso(id) {
+        if (!confirm("¿Borrar del historial?")) return;
+        let historial = JSON.parse(localStorage.getItem("misNotas")) || [];
+        historial = historial.filter(i => i.id !== id);
+        localStorage.setItem("misNotas", JSON.stringify(historial));
+        cargarTabla();
+    }
 </script>
 
 </body>
