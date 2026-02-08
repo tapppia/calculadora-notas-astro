@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Notas Pro - Astrofísica</title>
+    <title>Calculadora Astrofísica - Notas & Predicción</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -17,7 +17,6 @@
         body {
             font-family: 'Oswald', sans-serif;
             background-color: var(--bg);
-            color: #333;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -40,7 +39,6 @@
             padding: 20px;
             border-radius: 12px;
             margin: -10px 0 25px 0;
-            font-size: 1.8rem;
             text-transform: uppercase;
         }
 
@@ -64,34 +62,29 @@
             outline: none;
         }
 
-        optgroup {
-            background: #eee;
-            font-weight: bold;
-        }
+        optgroup { background: #eee; font-weight: bold; }
 
-        /* --- Estilos de la Barra de Progreso --- */
+        /* Barra de Progreso */
         .progress-wrapper {
-            margin: 25px 0;
+            margin: 25px 0 10px 0;
             background: #eee;
             border-radius: 50px;
             height: 30px;
             width: 100%;
             overflow: hidden;
             position: relative;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .progress-bar {
             height: 100%;
             width: 0%;
             background-color: var(--danger);
-            transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s;
+            transition: width 0.6s ease-in-out, background-color 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
         .btn {
@@ -109,46 +102,36 @@
 
         .btn-mode { background: var(--primary); color: white; }
         .btn-save { background: #333; color: white; }
-        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
+        .btn:hover { opacity: 0.85; transform: translateY(-1px); }
 
         .note-input-row {
             display: flex;
             gap: 10px;
             margin-top: 10px;
-            animation: fadeIn 0.3s ease;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
         .results-box {
-            margin-top: 20px;
+            margin-top: 10px;
             padding: 15px;
             border-radius: 12px;
             background: var(--primary);
             color: white;
-            font-size: 1.2rem;
-            min-height: 50px;
+            font-size: 1.1rem;
+            line-height: 1.4;
         }
 
-        table {
-            width: 100%;
-            margin-top: 30px;
-            border-collapse: collapse;
+        .needed-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-weight: bold;
         }
 
+        table { width: 100%; margin-top: 30px; border-collapse: collapse; }
         th { background: var(--primary); color: white; padding: 12px; }
         td { padding: 10px; border-bottom: 1px solid #ddd; }
-
-        .action-btns button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: 'Oswald';
-            margin: 0 2px;
-        }
-        .btn-load { background: var(--primary); color: white; }
-        .btn-del { background: #ff4444; color: white; }
+        .btn-load { background: var(--primary); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-family: 'Oswald'; }
+        .btn-del { background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-family: 'Oswald'; }
     </style>
 </head>
 <body>
@@ -177,22 +160,12 @@
             <option>Comunicación científica</option>
             <option>Inglés II</option>
         </optgroup>
-        <optgroup label="─── SEMESTRE III ───">
+        <optgroup label="─── SEMESTRE III+ ───">
             <option>Mecánica Newtoniana</option>
             <option>Cálculo Vectorial</option>
-            <option>Física Computacional III</option>
-            <option>Estructura de la Materia</option>
-            <option>Termodinamica</option>
-            <option>Desarrollo de Software</option>
-            <option>Inglés III</option>
-        </optgroup>
-        <optgroup label="─── SEMESTRE IV+ ───">
             <option>Electromagnetismo</option>
-            <option>Ondas</option>
-            <option>Métodos Matemáticos I</option>
+            <option>Termodinámica</option>
             <option>Astrofísica Estelar</option>
-            <option>Astrofísica Galáctica</option>
-            <option>Trabajo de titulación</option>
         </optgroup>
     </select>
 
@@ -215,7 +188,7 @@
         <div id="barraProgreso" class="progress-bar">0.0</div>
     </div>
 
-    <div class="results-box" id="resultados">Esperando notas...</div>
+    <div class="results-box" id="resultados">Ingresa tus notas...</div>
 
     <button class="btn btn-save" onclick="guardarCurso()">Guardar en Historial</button>
 
@@ -231,7 +204,6 @@
 <script>
     let esPonderado = false;
 
-    // Inicialización
     document.getElementById("cantidadNotas").addEventListener("input", generarCampos);
     generarCampos();
     cargarTabla();
@@ -250,17 +222,16 @@
         for (let i = 0; i < cantidad; i++) {
             const div = document.createElement("div");
             div.className = "note-input-row";
-
             const nInput = document.createElement("input");
             nInput.type = "number"; nInput.step = "0.1"; nInput.placeholder = `Nota ${i+1}`;
-            if (notas[i] !== undefined) nInput.value = notas[i];
+            if (notas[i]) nInput.value = notas[i];
             nInput.oninput = calcular;
             div.appendChild(nInput);
 
             if (esPonderado) {
                 const pInput = document.createElement("input");
                 pInput.type = "number"; pInput.placeholder = "% Peso";
-                if (pesos[i] !== undefined) pInput.value = pesos[i];
+                if (pesos[i]) pInput.value = pesos[i];
                 pInput.oninput = calcular;
                 div.appendChild(pInput);
             }
@@ -271,102 +242,120 @@
 
     function calcular() {
         const minAprobar = parseFloat(document.getElementById("notaAprobacion").value) || 4.0;
+        const nTotal = parseInt(document.getElementById("cantidadNotas").value) || 0;
         const filas = document.querySelectorAll(".note-input-row");
-        let sumaPonderada = 0;
+        
+        let sumaTotalObtenida = 0;
+        let notasIngresadas = 0;
         let sumaPesos = 0;
-        let sumaSimple = 0;
-        let notasContadas = 0;
 
         filas.forEach(fila => {
             const nota = parseFloat(fila.children[0].value);
             if (!isNaN(nota)) {
                 if (esPonderado) {
                     const peso = parseFloat(fila.children[1].value) || 0;
-                    sumaPonderada += (nota * (peso / 100));
+                    sumaTotalObtenida += (nota * (peso / 100));
                     sumaPesos += peso;
                 } else {
-                    sumaSimple += nota;
-                    notasContadas++;
+                    sumaTotalObtenida += nota;
                 }
+                notasIngresadas++;
             }
         });
 
-        let promedioFinal = 0;
+        let promActual = 0;
         if (esPonderado) {
-            promedioFinal = sumaPesos > 0 ? (sumaPonderada / sumaPesos) * 100 : 0;
+            promActual = sumaPesos > 0 ? (sumaTotalObtenida / sumaPesos) * 100 : 0;
         } else {
-            promedioFinal = notasContadas > 0 ? sumaSimple / notasContadas : 0;
+            promActual = notasIngresadas > 0 ? sumaTotalObtenida / notasIngresadas : 0;
         }
+        promActual = parseFloat(promActual.toFixed(1));
 
-        promedioFinal = parseFloat(promedioFinal.toFixed(1));
-        actualizarInterfaz(promedioFinal, minAprobar, notasContadas, sumaPesos);
-        return promedioFinal;
+        actualizarUI(promActual, minAprobar, notasIngresadas, nTotal, sumaTotalObtenida, sumaPesos);
+        return promActual;
     }
 
-    function actualizarInterfaz(prom, min, cant, pesos) {
+    function actualizarUI(prom, min, nIngresadas, nTotal, sumaTotal, sumaPesos) {
         const barra = document.getElementById("barraProgreso");
         const resBox = document.getElementById("resultados");
-
-        // Actualizar Barra (escala 1 a 7)
-        let porcentajeColor = (prom / 7) * 100;
-        barra.style.width = Math.min(porcentajeColor, 100) + "%";
-        barra.textContent = prom > 0 ? prom : "";
         
-        if (prom >= min) {
-            barra.style.backgroundColor = "#4CAF50"; // Verde
-            resBox.innerHTML = `Promedio: ${prom} <br> <span style="font-size: 0.9rem">✅ ¡Vas súper bien!</span>`;
-        } else {
-            barra.style.backgroundColor = prom >= min - 1 ? "#FF9800" : "#f44336"; // Naranja o Rojo
-            resBox.innerHTML = `Promedio: ${prom} <br> <span style="font-size: 0.9rem">⚠️ Bajo el mínimo (${min})</span>`;
+        // Actualizar Barra
+        let porcBarra = (prom / 7) * 100;
+        barra.style.width = Math.min(porcBarra, 100) + "%";
+        barra.textContent = prom > 0 ? prom : "";
+        barra.style.backgroundColor = prom >= min ? "#4CAF50" : (prom >= min - 1 ? "#FF9800" : "#f44336");
+
+        // Lógica de Mensajes y Predicción
+        let msg = `Promedio actual: <strong>${prom}</strong>`;
+        const nRestantes = nTotal - nIngresadas;
+
+        if (nIngresadas === 0) {
+            msg = "Esperando notas...";
+        } else if (prom >= min && nRestantes === 0) {
+            msg += "<br>✅ ¡Felicidades! Aprobaste el curso.";
+        } else if (prom < min && nRestantes === 0) {
+            msg += "<br>❌ Reprobado. No alcanzas el mínimo.";
+        } else if (nRestantes > 0) {
+            if (!esPonderado) {
+                const puntosFaltantes = (min * nTotal) - sumaTotal;
+                const notaNecesaria = puntosFaltantes / nRestantes;
+                
+                if (notaNecesaria > 7.0) {
+                    msg += `<br>⚠️ Necesitas un <strong>${notaNecesaria.toFixed(1)}</strong>. <br>Ya no es posible aprobar matemáticamente.`;
+                } else if (notaNecesaria <= 1.0) {
+                    msg += `<br>✨ ¡Ya aprobaste! Solo mantén el ritmo.`;
+                } else {
+                    msg += `<br>Para aprobar con ${min} necesitas un <span class="needed-badge">${notaNecesaria.toFixed(1)}</span> promedio en las ${nRestantes} notas restantes.`;
+                }
+            } else {
+                // Modo Ponderado
+                const pesoRestante = 100 - sumaPesos;
+                if (pesoRestante > 0) {
+                    const puntosFaltantes = min - sumaTotal; // sumaTotal aquí ya es nota * peso/100
+                    const notaNecesaria = (puntosFaltantes / pesoRestante) * 100;
+                    
+                    if (notaNecesaria > 7.0) {
+                        msg += `<br>⚠️ Necesitas un <strong>${notaNecesaria.toFixed(1)}</strong> en el ${pesoRestante}% restante. Muy difícil.`;
+                    } else if (notaNecesaria <= 1.0) {
+                        msg += `<br>✨ Con el peso actual ya estarías aprobando.`;
+                    } else {
+                        msg += `<br>Necesitas un <span class="needed-badge">${notaNecesaria.toFixed(1)}</span> en el ${pesoRestante}% restante para aprobar.`;
+                    }
+                }
+            }
         }
+        resBox.innerHTML = msg;
     }
 
+    // --- Funciones de Persistencia (LocalStorage) ---
     function guardarCurso() {
         const curso = document.getElementById("curso").value;
-        if (!curso) return alert("Selecciona una asignatura primero");
-
+        if (!curso) return alert("Selecciona una asignatura");
         const prom = calcular();
-        const filas = document.querySelectorAll(".note-input-row");
-        let notasArr = [], pesosArr = [];
-
-        filas.forEach(f => {
-            notasArr.push(f.children[0].value);
-            if(esPonderado) pesosArr.push(f.children[1].value);
-        });
-
         const data = {
-            id: curso,
-            promedio: prom,
+            id: curso, prom: prom, 
             modo: esPonderado ? 'ponderado' : 'simple',
-            notas: notasArr,
-            pesos: pesosArr,
+            notas: Array.from(document.querySelectorAll(".note-input-row input:first-child")).map(i => i.value),
+            pesos: esPonderado ? Array.from(document.querySelectorAll(".note-input-row input:last-child")).map(i => i.value) : [],
             min: document.getElementById("notaAprobacion").value
         };
-
         let historial = JSON.parse(localStorage.getItem("misNotas")) || [];
-        const index = historial.findIndex(i => i.id === curso);
-        if (index > -1) historial[index] = data; else historial.push(data);
-
+        const idx = historial.findIndex(i => i.id === curso);
+        if (idx > -1) historial[idx] = data; else historial.push(data);
         localStorage.setItem("misNotas", JSON.stringify(historial));
         cargarTabla();
     }
 
     function cargarTabla() {
-        const tabla = document.getElementById("cuerpoTabla");
-        tabla.innerHTML = "";
+        const tbody = document.getElementById("cuerpoTabla");
+        tbody.innerHTML = "";
         let historial = JSON.parse(localStorage.getItem("misNotas")) || [];
-
         historial.forEach(item => {
             const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${item.id}</td>
-                <td style="font-weight:bold; color:${item.promedio >= item.min ? 'green' : 'red'}">${item.promedio}</td>
-                <td class="action-btns">
-                    <button class="btn-load" onclick="cargarCurso('${item.id}')">Ver</button>
-                    <button class="btn-del" onclick="borrarCurso('${item.id}')">✕</button>
-                </td>
-            `;
-            tabla.appendChild(tr);
+            tr.innerHTML = `<td>${item.id}</td><td style="font-weight:bold">${item.prom}</td>
+                <td><button class="btn-load" onclick="cargarCurso('${item.id}')">Ver</button>
+                <button class="btn-del" onclick="borrarCurso('${item.id}')">✕</button></td>`;
+            tbody.appendChild(tr);
         });
     }
 
@@ -374,7 +363,6 @@
         let historial = JSON.parse(localStorage.getItem("misNotas")) || [];
         const item = historial.find(i => i.id === id);
         if (!item) return;
-
         document.getElementById("curso").value = item.id;
         document.getElementById("notaAprobacion").value = item.min;
         esPonderado = (item.modo === 'ponderado');
@@ -384,13 +372,11 @@
     }
 
     function borrarCurso(id) {
-        if (!confirm("¿Borrar del historial?")) return;
         let historial = JSON.parse(localStorage.getItem("misNotas")) || [];
         historial = historial.filter(i => i.id !== id);
         localStorage.setItem("misNotas", JSON.stringify(historial));
         cargarTabla();
     }
 </script>
-
 </body>
 </html>
